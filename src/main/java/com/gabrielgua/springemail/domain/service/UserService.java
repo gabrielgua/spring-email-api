@@ -4,7 +4,6 @@ import com.gabrielgua.springemail.domain.entity.User;
 import com.gabrielgua.springemail.domain.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -18,7 +17,11 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User getUserById(Long userId) {
+    public User getUserById(String userId) {
         return userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User Not Found"));
+    }
+
+    public void save(User user) {
+        userRepository.save(user);
     }
 }

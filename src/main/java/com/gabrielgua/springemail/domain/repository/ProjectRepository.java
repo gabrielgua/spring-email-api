@@ -10,5 +10,5 @@ import java.util.Optional;
 @Repository
 public interface ProjectRepository extends MongoRepository<Project, String> {
 
-    List<Project> findByUserId(Long userId);
+    List<Project> findByUserId(String userId);
 }

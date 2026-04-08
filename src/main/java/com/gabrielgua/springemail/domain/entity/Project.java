@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
+import java.time.Instant;
 import java.time.OffsetDateTime;
 
 @Data
@@ -20,8 +21,8 @@ public class Project {
     private String apiKey;
     private String destinationEmail;
     private Boolean active;
-    private OffsetDateTime createdAt;
+    private Instant createdAt;
 
     @Indexed(name = "user_id_index")
-    private Long userId;
+    private String userId;
 }

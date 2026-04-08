@@ -15,7 +15,7 @@ public class ProjectController {
     private final ProjectService projectService;
 
     @GetMapping
-    public List<Project> findByUserId(@RequestParam Long userId) {
+    public List<Project> findByUserId(@RequestParam String userId) {
         return projectService.findByUserId(userId);
     }
 

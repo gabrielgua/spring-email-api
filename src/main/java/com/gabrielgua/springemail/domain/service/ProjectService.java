@@ -1,5 +1,6 @@
 package com.gabrielgua.springemail.domain.service;
 
+import com.gabrielgua.springemail.api.utils.ProjectIdGenerator;
 import com.gabrielgua.springemail.domain.entity.Project;
 import com.gabrielgua.springemail.domain.repository.ProjectRepository;
 import lombok.AllArgsConstructor;
@@ -17,7 +18,12 @@ public class ProjectService {
         return projectRepository.findById(id).orElseThrow(() -> new RuntimeException("Project not found"));
     }
 
-    public List<Project> findByUserId(Long userId) {
+    public List<Project> findByUserId(String userId) {
         return projectRepository.findByUserId(userId);
+    }
+
+    public void save(Project project) {
+        project.setId(ProjectIdGenerator.generate(project.getName()));
+        projectRepository.save(project);
     }
 }

@@ -5,9 +5,9 @@ import lombok.EqualsAndHashCode;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
-import java.time.OffsetDateTime;
-import java.util.Set;
-import java.util.UUID;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -16,11 +16,11 @@ public class User {
 
     @MongoId
     @EqualsAndHashCode.Include
-    private Long id;
+    private String id;
     private String name;
     private String email;
     private String password;
-    private OffsetDateTime createdAt;
+    private Instant createdAt;
 
-    private Set<String> projectIds;
+    private List<String> projectIds = new ArrayList<>();
 }
