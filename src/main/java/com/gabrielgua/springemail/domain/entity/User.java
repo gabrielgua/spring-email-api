@@ -1,28 +1,26 @@
-package com.gabrielgua.springemail.domain.model;
+package com.gabrielgua.springemail.domain.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.time.OffsetDateTime;
 import java.util.Set;
 import java.util.UUID;
 
 @Data
-@Document(collection = "users")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Document(collection = "tb_users")
 public class User {
 
-    @Id
+    @MongoId
     @EqualsAndHashCode.Include
-    private UUID id;
+    private Long id;
     private String name;
     private String email;
     private String password;
     private OffsetDateTime createdAt;
 
-    private Set<Project> projects;
+    private Set<String> projectIds;
 }
