@@ -2,6 +2,7 @@ package com.gabrielgua.springemail.infra.data;
 
 import com.gabrielgua.springemail.domain.entity.Project;
 import com.gabrielgua.springemail.domain.entity.User;
+import com.gabrielgua.springemail.domain.entity.UserRole;
 import com.gabrielgua.springemail.domain.repository.ProjectRepository;
 import com.gabrielgua.springemail.domain.repository.UserRepository;
 import com.gabrielgua.springemail.domain.service.ProjectService;
@@ -28,7 +29,8 @@ public class DummyData {
                 User user = new User();
                 user.setName("Gabriel");
                 user.setEmail("gabriel@springemail.com");
-                user.setPassword("gabriel123");
+                user.setRole(UserRole.ROLE_ADMIN);
+                user.setPassword("$2y$10$Km36Dw4Ctiq4ljhE8IN2IOxRfmFv.Pumhb/O5gimurVYuwYh3uN0W");
                 user.setCreatedAt(Instant.now());
                 userRepository.save(user);
 

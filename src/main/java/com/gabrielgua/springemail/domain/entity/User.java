@@ -18,9 +18,16 @@ public class User {
     @EqualsAndHashCode.Include
     private String id;
     private String name;
+
+    private UserRole role;
     private String email;
     private String password;
     private Instant createdAt;
 
     private List<String> projectIds = new ArrayList<>();
+
+    public Boolean isNew() {
+        return this.id == null;
+    }
+
 }
