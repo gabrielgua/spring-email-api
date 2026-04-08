@@ -36,7 +36,7 @@ public class DummyData {
                 project.setName("Project Test");
                 project.setApiKey("proj_test_api_key_123987789132");
                 project.setActive(true);
-                project.setDestinationEmail("support@project.com");
+                project.setDestinationEmail("gabrielgua.spring.email@gmail.com");
                 project.setUserId(user.getId());
                 project.setCreatedAt(Instant.now());
                 projectService.save(project);

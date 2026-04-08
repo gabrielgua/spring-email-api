@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface ProjectRepository extends MongoRepository<Project, String> {
 
     List<Project> findByUserId(String userId);
+
+    Optional<Project> findByApiKey(String apiKey);
 }

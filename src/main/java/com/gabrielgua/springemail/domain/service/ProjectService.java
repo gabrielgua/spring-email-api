@@ -18,6 +18,10 @@ public class ProjectService {
         return projectRepository.findById(id).orElseThrow(() -> new RuntimeException("Project not found"));
     }
 
+    public Project findByApiKey(String apiKey) {
+        return projectRepository.findByApiKey(apiKey).orElseThrow(() -> new RuntimeException("Project not found"));
+    }
+
     public List<Project> findByUserId(String userId) {
         return projectRepository.findByUserId(userId);
     }
