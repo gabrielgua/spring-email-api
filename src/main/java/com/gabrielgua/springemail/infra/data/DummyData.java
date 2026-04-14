@@ -41,6 +41,7 @@ public class DummyData {
                 project.setDestinationEmail("gabrielgua.spring.email@gmail.com");
                 project.setUserId(user.getId());
                 project.setCreatedAt(Instant.now());
+                project.setAllowedOrigins(List.of("https://projecteste.com.br", "http://projecteste.com.br"));
                 projectService.save(project);
 
                 user.setProjectIds(List.of(project.getId()));

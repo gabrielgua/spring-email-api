@@ -32,6 +32,11 @@ public class OutputResponseHelper {
         out.flush();
     }
 
+    public void error(HttpServletResponse response, HttpStatus status, String error, String message) throws IOException, ServletException {
+        var problem = exceptionService.createProblem(error, message, status.value());
+        writeOutputResponse(response, problem);
+    }
+
     public void tokenExpired(HttpServletResponse response) throws IOException, ServletException {
         var status = HttpStatus.UNAUTHORIZED;
         var problem = exceptionService.createProblem("TOKEN_EXPIRED", "Token is expired", status.value());

@@ -44,8 +44,6 @@ public class SecurityFilter extends OncePerRequestFilter {
             return;
         }
 
-        System.out.println("Authorization header found: " + header);
-
         token = header.substring(7);
         try {
             userId = tokenService.getTokenSubject(token);
@@ -65,7 +63,6 @@ public class SecurityFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
 
-                System.out.println("Authentication found: " + userDetails);
                 filterChain.doFilter(request, response);
             }
         } catch (ExpiredJwtException ex) {

@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.time.Instant;
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -21,6 +22,7 @@ public class Project {
     private String destinationEmail;
     private Boolean active;
     private Instant createdAt;
+    private List<String> allowedOrigins;
 
     @Indexed(name = "user_id_index")
     private String userId;

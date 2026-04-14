@@ -14,8 +14,8 @@ public class EmailService {
     private final ProjectService projectService;
     private final JavaMailSender javaMailSender;
 
-    public void sendEmail(String apiKey, EmailRequest request) {
-        Project project = projectService.findByApiKey(apiKey);
+    public void sendEmail(String projectId, EmailRequest request) {
+        Project project = projectService.findById(projectId);
 
         if (project.getActive().equals(false)) {
             return;
