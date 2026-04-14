@@ -1,5 +1,7 @@
 package com.gabrielgua.springemail.api.controller;
 
+import com.gabrielgua.springemail.api.model.dtos.UserResponse;
+import com.gabrielgua.springemail.api.model.mapper.UserMapper;
 import com.gabrielgua.springemail.domain.entity.User;
 import com.gabrielgua.springemail.domain.service.UserService;
 import lombok.AllArgsConstructor;
@@ -16,14 +18,15 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final UserMapper userMapper;
 
     @GetMapping
-    public List<User> getAllUsers() {
-        return userService.ListAll();
+    public List<UserResponse> getAllUsers() {
+        return userMapper.toResponseList(userService.ListAll());
     }
 
     @GetMapping("/{userId}")
-    public User getUserById(@PathVariable String userId) {
-        return  userService.findById(userId);
+    public UserResponse getUserById(@PathVariable String userId) {
+        return userMapper.toResponse(userService.findById(userId));
     }
 }

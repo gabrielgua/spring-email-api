@@ -2,7 +2,6 @@ package com.gabrielgua.springemail.api.security;
 
 import com.gabrielgua.springemail.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.jspecify.annotations.NonNull;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
