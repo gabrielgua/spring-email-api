@@ -1,6 +1,7 @@
 package com.gabrielgua.springemail.api.controller;
 
 import com.gabrielgua.springemail.api.model.EmailRequest;
+import com.gabrielgua.springemail.domain.entity.Project;
 import com.gabrielgua.springemail.domain.service.EmailService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,8 @@ public class EmailController {
 
     @PostMapping
     public void sendEmail(@RequestBody EmailRequest emailRequest, HttpServletRequest request) {
-        var projectId = (String) request.getAttribute("projectId");
-        emailService.sendEmail(projectId, emailRequest);
+        var project = (Project) request.getAttribute("project");
+        System.out.println("Sending email from: " + project.getApiKey());
+//        emailService.sendEmail(projectId, emailRequest);
     }
 }

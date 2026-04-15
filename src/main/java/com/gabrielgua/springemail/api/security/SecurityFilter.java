@@ -38,8 +38,6 @@ public class SecurityFilter extends OncePerRequestFilter {
         final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         if (header == null || !header.startsWith("Bearer ")) {
-
-            System.out.println("Authorization header not found or doesnt starts with Bearer: " + header);
             filterChain.doFilter(request, response);
             return;
         }

@@ -44,7 +44,17 @@ public class DummyData {
                 project.setAllowedOrigins(List.of("https://projecteste.com.br", "http://projecteste.com.br"));
                 projectService.save(project);
 
-                user.setProjectIds(List.of(project.getId()));
+                Project project2 = new Project();
+                project2.setName("Project Test 2");
+                project2.setApiKey("proj_test_api_key_12837912");
+                project2.setActive(true);
+                project2.setDestinationEmail("gabrielgua.spring.email@gmail.com");
+                project2.setUserId(user.getId());
+                project2.setCreatedAt(Instant.now());
+                project2.setAllowedOrigins(List.of("https://projecteste.com.br", "http://projecteste.com.br"));
+                projectService.save(project2);
+
+                user.setProjectIds(List.of(project.getId(), project2.getId()));
                 userRepository.save(user);
             };
     }
