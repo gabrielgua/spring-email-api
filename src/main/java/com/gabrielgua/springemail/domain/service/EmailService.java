@@ -2,10 +2,17 @@ package com.gabrielgua.springemail.domain.service;
 
 import com.gabrielgua.springemail.api.model.EmailRequest;
 import com.gabrielgua.springemail.domain.entity.Project;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring6.SpringTemplateEngine;
+
+import java.time.Year;
 
 @Service
 @AllArgsConstructor
@@ -13,34 +20,34 @@ public class EmailService {
 
     private final ProjectService projectService;
     private final JavaMailSender javaMailSender;
+    private final SpringTemplateEngine templateEngine;
 
     public void sendEmail(Project project, EmailRequest request) {
 
-        var message = new SimpleMailMessage();
+        Context context = new Context();
+        context.setVariable("name", request.getName());
+        context.setVariable("email", request.getEmail());
+        context.setVariable("message", request.getMessage());
+        context.setVariable("projectName", project.getName());
 
-        message.setTo(project.getDestinationEmail());
-        message.setFrom("no-reply@springemail.com");
-        message.setReplyTo(request.getEmail());
-        message.setSubject("Novo Contato - " + project.getName());
-        message.setText(buildBody(project, request));
+        context.setVariable("primaryColor", "#4F46E5");
+        context.setVariable("year", Year.now().getValue());
 
-        javaMailSender.send(message);
-    }
+        String html = templateEngine.process("email/contact", context);
 
-    private String buildBody(Project project, EmailRequest req) {
-        return """
-                Novo contato do site - %s,
+        MimeMessage message = javaMailSender.createMimeMessage();
 
-                Nome: %s
-                Email: %s
+        try {
+            var helper = new MimeMessageHelper(message, "UTF-8");
+            helper.setFrom("no-reply@emailautomatico.com");
+            helper.setTo(project.getDestinationEmail());
+            helper.setReplyTo(project.getDestinationEmail());
+            helper.setSubject("Novo Contato - " + project.getName());
+            helper.setText(html, true);
 
-                Mensagem:
-                %s
-                """.formatted(
-                        project.getName(),
-                req.getName(),
-                req.getEmail(),
-                req.getMessage()
-        );
+            javaMailSender.send(message);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
