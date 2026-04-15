@@ -1,6 +1,6 @@
 package com.gabrielgua.springemail.domain.service;
 
-import com.gabrielgua.springemail.infra.properties.EmailRateLimiterProperties;
+import com.gabrielgua.springemail.infra.properties.RateLimiterProperties;
 import io.github.resilience4j.ratelimiter.RateLimiter;
 import io.github.resilience4j.ratelimiter.RateLimiterConfig;
 import lombok.RequiredArgsConstructor;
@@ -13,16 +13,16 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequiredArgsConstructor
 public class RateLimiterService {
 
-    private final EmailRateLimiterProperties properties;
+    private final RateLimiterProperties properties;
     private final Map<String, RateLimiter> rateLimiters = new ConcurrentHashMap<>();
 
     public boolean tryConsume(String key) {
         RateLimiter limiter = rateLimiters.computeIfAbsent(key, k ->
                 RateLimiter.of(k,
                         RateLimiterConfig.custom()
-                                .limitForPeriod(properties.getLimitForPeriod())
-                                .limitRefreshPeriod(properties.getLimitRefreshPeriod())
-                                .timeoutDuration(properties.getTimeoutDuration())
+                                .limitForPeriod(properties.getEmail().getLimitForPeriod())
+                                .limitRefreshPeriod(properties.getEmail().getLimitRefreshPeriod())
+                                .timeoutDuration(properties.getEmail().getTimeoutDuration())
                                 .build()
                 )
         );

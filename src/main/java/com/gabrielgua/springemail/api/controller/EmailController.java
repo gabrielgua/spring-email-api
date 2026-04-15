@@ -20,7 +20,6 @@ public class EmailController {
     @PostMapping
     public void sendEmail(@RequestBody EmailRequest emailRequest, HttpServletRequest request) {
         var project = (Project) request.getAttribute("project");
-        System.out.println("Sending email from: " + project.getApiKey());
-//        emailService.sendEmail(projectId, emailRequest);
+        emailService.sendEmail(project, emailRequest);
     }
 }

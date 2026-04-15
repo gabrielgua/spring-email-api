@@ -14,12 +14,7 @@ public class EmailService {
     private final ProjectService projectService;
     private final JavaMailSender javaMailSender;
 
-    public void sendEmail(String projectId, EmailRequest request) {
-        Project project = projectService.findById(projectId);
-
-        if (project.getActive().equals(false)) {
-            return;
-        }
+    public void sendEmail(Project project, EmailRequest request) {
 
         var message = new SimpleMailMessage();
 
