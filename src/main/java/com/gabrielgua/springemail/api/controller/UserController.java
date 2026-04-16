@@ -1,14 +1,14 @@
 package com.gabrielgua.springemail.api.controller;
 
+import com.gabrielgua.springemail.api.model.dtos.UserRequest;
 import com.gabrielgua.springemail.api.model.dtos.UserResponse;
 import com.gabrielgua.springemail.api.model.mapper.UserMapper;
 import com.gabrielgua.springemail.domain.entity.User;
 import com.gabrielgua.springemail.domain.service.UserService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,4 +29,6 @@ public class UserController {
     public UserResponse getUserById(@PathVariable String userId) {
         return userMapper.toResponse(userService.findById(userId));
     }
+
+
 }

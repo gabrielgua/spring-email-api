@@ -26,7 +26,7 @@ public class SecurityConfig {
     private final RestAccessDeniedHandler restAccessDeniedHandler;
     private final RestAuthenticationEntryPointHandler restAuthenticationEntryPointHandler;
 
-    private static final String[] POST_WHITE_LIST = {"/api/auth/authenticate", "/api/auth/validate-token", "/api/emails"};
+    private static final String[] POST_WHITE_LIST = {"/api/auth/authenticate", "/api/auth/register", "/api/auth/validate-token", "/api/emails"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
