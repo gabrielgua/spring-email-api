@@ -2,6 +2,7 @@ package com.gabrielgua.springemail.domain.service;
 
 import com.gabrielgua.springemail.api.model.EmailRequest;
 import com.gabrielgua.springemail.domain.entity.Project;
+import com.gabrielgua.springemail.domain.exception.BusinessException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
@@ -29,8 +30,6 @@ public class EmailService {
         context.setVariable("email", request.getEmail());
         context.setVariable("message", request.getMessage());
         context.setVariable("projectName", project.getName());
-
-        context.setVariable("primaryColor", "#4F46E5");
         context.setVariable("year", Year.now().getValue());
 
         String html = templateEngine.process("email/contact", context);
@@ -47,7 +46,7 @@ public class EmailService {
 
             javaMailSender.send(message);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new BusinessException("Failed to send email: " + e.getMessage());
         }
     }
 }
