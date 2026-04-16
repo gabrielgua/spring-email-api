@@ -3,7 +3,7 @@ package com.gabrielgua.springemail.infra.filter;
 import com.gabrielgua.springemail.domain.entity.Project;
 import com.gabrielgua.springemail.domain.repository.ProjectRepository;
 import com.gabrielgua.springemail.domain.service.RateLimiterService;
-import com.gabrielgua.springemail.exception.OutputResponseHelper;
+import com.gabrielgua.springemail.api.exception.OutputResponseHelper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

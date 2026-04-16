@@ -1,8 +1,7 @@
 package com.gabrielgua.springemail.api.security;
 
 import com.gabrielgua.springemail.domain.repository.UserRepository;
-import com.gabrielgua.springemail.domain.service.UserService;
-import com.gabrielgua.springemail.exception.OutputResponseHelper;
+import com.gabrielgua.springemail.api.exception.OutputResponseHelper;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;

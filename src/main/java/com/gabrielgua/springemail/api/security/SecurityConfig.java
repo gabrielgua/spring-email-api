@@ -1,7 +1,7 @@
 package com.gabrielgua.springemail.api.security;
 
-import com.gabrielgua.springemail.exception.RestAccessDeniedHandler;
-import com.gabrielgua.springemail.exception.RestAuthenticationEntryPointHandler;
+import com.gabrielgua.springemail.api.exception.RestAccessDeniedHandler;
+import com.gabrielgua.springemail.api.exception.RestAuthenticationEntryPointHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

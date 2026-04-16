@@ -1,6 +1,7 @@
 package com.gabrielgua.springemail.domain.service;
 
 import com.gabrielgua.springemail.domain.entity.User;
+import com.gabrielgua.springemail.domain.exception.UserNotFoundException;
 import com.gabrielgua.springemail.domain.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,11 +21,11 @@ public class UserService {
     }
 
     public User findById(String userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User Not Found"));
+        return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
     }
 
     public User findByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User Not Found"));
+        return userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
     }
 
     public void save(User user) {

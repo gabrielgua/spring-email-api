@@ -1,4 +1,4 @@
-package com.gabrielgua.springemail.exception;
+package com.gabrielgua.springemail.api.exception;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

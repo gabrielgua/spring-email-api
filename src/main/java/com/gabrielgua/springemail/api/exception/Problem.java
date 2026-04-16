@@ -1,4 +1,4 @@
-package com.gabrielgua.springemail.exception;
+package com.gabrielgua.springemail.api.exception;
 
 import lombok.Builder;
 import lombok.Getter;

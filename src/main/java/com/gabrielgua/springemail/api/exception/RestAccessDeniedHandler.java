@@ -1,4 +1,4 @@
-package com.gabrielgua.springemail.exception;
+package com.gabrielgua.springemail.api.exception;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
