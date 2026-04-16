@@ -4,17 +4,20 @@ import com.gabrielgua.springemail.domain.entity.User;
 import com.gabrielgua.springemail.domain.exception.UserNotFoundException;
 import com.gabrielgua.springemail.domain.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passWordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     public List<User> ListAll() {
         return userRepository.findAll();
@@ -28,12 +31,14 @@ public class UserService {
         return userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
     }
 
-    public void save(User user) {
+    public User save(User user) {
         //TODO: add check for no duped email
 
         if (user.isNew()) {
-            user.setPassword(passWordEncoder.encode(user.getPassword()));
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setCreatedAt(Instant.now());
         }
-        userRepository.save(user);
+
+        return userRepository.save(user);
     }
 }

@@ -3,6 +3,7 @@ package com.gabrielgua.springemail.api.security;
 import com.gabrielgua.springemail.api.model.ValidateTokenRequest;
 import com.gabrielgua.springemail.api.model.dtos.UserRequest;
 import com.gabrielgua.springemail.api.model.dtos.UserResponse;
+import com.gabrielgua.springemail.api.model.mapper.UserMapper;
 import com.gabrielgua.springemail.domain.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ public class AuthController {
     private final AuthService authService;
     private final UserService userService;
     private final TokenService tokenService;
+    private final UserMapper userMapper;
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthResponse> authenticate(@Valid @RequestBody AuthRequest request) {
@@ -29,12 +31,9 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> registerUser(@Valid @RequestBody UserRequest request) {
-        return ResponseEntity.ok(UserResponse.builder()
-                        .name(request.getName())
-                        .email(request.getEmail())
-                        .createdAt(Instant.now())
-                .build());
+    public ResponseEntity<AuthResponse> registerUser(@Valid @RequestBody UserRequest request) {
+        var user = userMapper.toEntity(request);
+        return ResponseEntity.ok(authService.register(userService.save(user)));
     }
 
     @PostMapping("/validate-token")

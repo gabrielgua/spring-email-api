@@ -22,7 +22,4 @@ public class UserRequest {
 
     @NotBlank
     private String password;
-
-    @NotNull
-    private Integer age;
 }
