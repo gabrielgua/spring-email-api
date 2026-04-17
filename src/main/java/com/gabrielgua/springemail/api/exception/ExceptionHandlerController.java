@@ -1,6 +1,7 @@
 package com.gabrielgua.springemail.api.exception;
 
 import com.gabrielgua.springemail.domain.exception.BusinessException;
+import com.gabrielgua.springemail.domain.exception.EmailTakenException;
 import com.gabrielgua.springemail.domain.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.el.util.ExceptionUtils;
@@ -98,6 +99,13 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         var status = HttpStatus.UNPROCESSABLE_CONTENT; //422
         var problem = exceptionService.createProblem("UNPROCESSABLE_CONTENT", ex.getMessage(), status.value());
 
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+    }
+
+    @ExceptionHandler(EmailTakenException.class)
+    public ResponseEntity<?> handleEmailTakenException(EmailTakenException ex, WebRequest request) {
+        var  status = HttpStatus.UNPROCESSABLE_CONTENT;
+        var problem = exceptionService.createProblem("EMAIL_TAKEN", ex.getMessage(), status.value());
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 

@@ -1,6 +1,7 @@
 package com.gabrielgua.springemail.domain.service;
 
 import com.gabrielgua.springemail.domain.entity.User;
+import com.gabrielgua.springemail.domain.exception.EmailTakenException;
 import com.gabrielgua.springemail.domain.exception.UserNotFoundException;
 import com.gabrielgua.springemail.domain.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -31,8 +32,15 @@ public class UserService {
         return userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
     }
 
+    public void validateEmail(User user) {
+        var found = userRepository.findByEmail(user.getEmail());
+        if (found.isPresent() && !found.get().getId().equals(user.getId())) {
+            throw new EmailTakenException();
+        }
+    }
+
     public User save(User user) {
-        //TODO: add check for no duped email
+        validateEmail(user);
 
         if (user.isNew()) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
