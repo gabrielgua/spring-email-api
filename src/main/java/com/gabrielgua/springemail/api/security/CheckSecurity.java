@@ -28,7 +28,7 @@ public @interface CheckSecurity {
     public @interface Projects {
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
-        @PreAuthorize("@authorizationService.canManageProject(#projectId, authentication.name)")
+        @PreAuthorize("@authorizationService.canManageProject(#projectId)")
         public @interface canManage { }
 
         @Retention(RetentionPolicy.RUNTIME)

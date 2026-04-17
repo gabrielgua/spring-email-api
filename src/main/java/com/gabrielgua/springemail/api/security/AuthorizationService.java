@@ -16,13 +16,13 @@ public class AuthorizationService {
         return authUtils.getAuthenticatedUser().getId().equals(userId);
     }
 
-    public boolean canManageProject(String projectId, String userId) {
+    public boolean canManageProject(String projectId) {
         if (authUtils.isAdmin()) {
             return true;
         }
 
         var project = projectService.findById(projectId);
-        return project.getUserId().equals(userId);
+        return project.getUserId().equals(authUtils.getAuthenticatedUser().getId());
     }
 
     public boolean canListProjects(String userId) {
