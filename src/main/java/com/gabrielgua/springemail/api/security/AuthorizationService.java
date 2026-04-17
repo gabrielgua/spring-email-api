@@ -1,0 +1,31 @@
+package com.gabrielgua.springemail.api.security;
+
+import com.gabrielgua.springemail.domain.service.ProjectService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+
+@Component
+@RequiredArgsConstructor
+public class AuthorizationService {
+
+    private final ProjectService projectService;
+    private final AuthUtils authUtils;
+
+    public boolean canManageProject(String projectId, String userId) {
+        if (authUtils.isAdmin()) {
+            return true;
+        }
+
+        var project = projectService.findById(projectId);
+        return project.getUserId().equals(userId);
+    }
+
+    public boolean canListProjects(String userId) {
+        if (authUtils.isAdmin()) {
+            return true;
+        }
+
+        return authUtils.getAuthenticatedUser().getId().equals(userId);
+    }
+}
+

@@ -2,6 +2,7 @@ package com.gabrielgua.springemail.api.controller;
 
 import com.gabrielgua.springemail.api.model.dtos.ProjectResponse;
 import com.gabrielgua.springemail.api.model.mapper.ProjectMapper;
+import com.gabrielgua.springemail.api.security.CheckSecurity;
 import com.gabrielgua.springemail.domain.entity.Project;
 import com.gabrielgua.springemail.domain.service.ProjectService;
 import com.gabrielgua.springemail.domain.service.UserService;
@@ -20,12 +21,14 @@ public class ProjectController {
     private final ProjectService projectService;
 
     @GetMapping
+    @CheckSecurity.Projects.canList
     public List<ProjectResponse> findByUserId(@RequestParam String userId) {
         var user = userService.findById(userId);
         return projectMapper.toResponseList(projectService.findByUserId(user.getId()));
     }
 
     @GetMapping("/{projectId}")
+    @CheckSecurity.Projects.canManage
     public ProjectResponse findById(@PathVariable String projectId) {
         return projectMapper.toResponse(projectService.findById(projectId));
     }

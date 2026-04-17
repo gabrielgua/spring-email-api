@@ -24,6 +24,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class SecurityFilter extends OncePerRequestFilter {
 
+    private final AuthUtils authUtils;
     private final TokenService tokenService;
     private final OutputResponseHelper helper;
     private final UserRepository userRepository;
@@ -45,7 +46,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         try {
             userId = tokenService.getTokenSubject(token);
 
-            if (userId != null && !isAuthenticated()) {
+            if (userId != null && !authUtils.isAuthenticated()) {
                 var user = userRepository.findById(userId);
 
                 if (user.isEmpty()) {
@@ -59,17 +60,13 @@ public class SecurityFilter extends OncePerRequestFilter {
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
-
-                filterChain.doFilter(request, response);
             }
+
+            filterChain.doFilter(request, response);
         } catch (ExpiredJwtException ex) {
             helper.tokenExpired(response);
         } catch (MalformedJwtException | SignatureException ex) {
             helper.tokenInvalid(response);
         }
-    }
-
-    private boolean isAuthenticated() {
-        return SecurityContextHolder.getContext().getAuthentication() != null;
     }
 }

@@ -40,4 +40,5 @@ public class AuthService {
         //empty for now mb will add more to it later, prob not tho
         return new HashMap<String, Object>() {};
     }
+
 }
