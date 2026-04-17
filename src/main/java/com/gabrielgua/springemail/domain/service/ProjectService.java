@@ -19,6 +19,10 @@ public class ProjectService {
         return projectRepository.findById(id).orElseThrow(ProjectNotFoundException::new);
     }
 
+    public List<Project> findAll() {
+        return projectRepository.findAll();
+    }
+
     public Project findByApiKey(String apiKey) {
         return projectRepository.findByApiKey(apiKey).orElseThrow(ProjectNotFoundException::new);
     }

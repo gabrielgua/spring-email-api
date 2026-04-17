@@ -7,11 +7,9 @@ import com.gabrielgua.springemail.api.model.mapper.UserMapper;
 import com.gabrielgua.springemail.domain.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 
@@ -31,6 +29,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<AuthResponse> register(@Valid @RequestBody UserRequest request) {
         var user = userMapper.toEntity(request);
         return ResponseEntity.ok(authService.register(userService.save(user)));
@@ -39,6 +38,6 @@ public class AuthController {
     @PostMapping("/validate-token")
     public Boolean validateToken(@Valid @RequestBody ValidateTokenRequest request) {
         var user = userService.findById(request.getUserId());
-        return tokenService.isTokenValid(request.getToken(), request.getUserId());
+        return tokenService.isTokenValid(request.getToken(), user.getId());
     }
 }

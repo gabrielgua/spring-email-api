@@ -6,6 +6,8 @@ import com.gabrielgua.springemail.api.security.CheckSecurity;
 import com.gabrielgua.springemail.domain.entity.Project;
 import com.gabrielgua.springemail.domain.service.ProjectService;
 import com.gabrielgua.springemail.domain.service.UserService;
+import com.mongodb.lang.NonNullApi;
+import com.mongodb.lang.Nullable;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +24,10 @@ public class ProjectController {
 
     @GetMapping
     @CheckSecurity.Projects.canList
-    public List<ProjectResponse> findByUserId(@RequestParam String userId) {
+    public List<ProjectResponse> findByUserId(@Nullable @RequestParam String userId) {
+        if (userId == null) {
+            return projectMapper.toResponseList(projectService.findAll());
+        }
         var user = userService.findById(userId);
         return projectMapper.toResponseList(projectService.findByUserId(user.getId()));
     }
