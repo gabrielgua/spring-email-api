@@ -9,10 +9,18 @@ import java.lang.annotation.Target;
 
 public @interface CheckSecurity {
 
+    public @interface General {
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @PreAuthorize("hasRole('ADMIN')")
+        public @interface isAdmin { }
+
+    }
+
     public @interface Users {
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
-        @PreAuthorize("hasRole('ADMIN') or #userId == authentication.name")
+        @PreAuthorize("@authorizationService.canManageUser(#userId)")
         public @interface canManage { }
 
     }

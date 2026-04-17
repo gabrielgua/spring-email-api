@@ -22,6 +22,7 @@ public class UserController {
     private final UserMapper userMapper;
 
     @GetMapping
+    @CheckSecurity.General.isAdmin
     public List<UserResponse> getAllUsers() {
         return userMapper.toResponseList(userService.ListAll());
     }

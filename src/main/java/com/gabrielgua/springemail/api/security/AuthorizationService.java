@@ -11,6 +11,11 @@ public class AuthorizationService {
     private final ProjectService projectService;
     private final AuthUtils authUtils;
 
+    public boolean canManageUser(String userId) {
+        if (authUtils.isAdmin()) return true;
+        return authUtils.getAuthenticatedUser().getId().equals(userId);
+    }
+
     public boolean canManageProject(String projectId, String userId) {
         if (authUtils.isAdmin()) {
             return true;
