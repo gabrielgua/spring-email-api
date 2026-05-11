@@ -79,7 +79,7 @@ public class DummyData {
                     "https://wiivalife.com",
                     "http://localhost:5173"
             ));
-            projectService.save(p1);
+            projectService.save(p1, user1.getId());
 
             Project p2 = new Project();
             p2.setName("Wiiva Checkout");
@@ -91,7 +91,7 @@ public class DummyData {
             p2.setAllowedOrigins(List.of(
                     "https://checkout.wiivalife.com"
             ));
-            projectService.save(p2);
+            projectService.save(p2, user2.getId());
 
             // ========================
             // 📦 PROJECTS - USER 2
@@ -106,7 +106,7 @@ public class DummyData {
             p3.setAllowedOrigins(List.of(
                     "https://fitnutrition.com"
             ));
-            projectService.save(p3);
+            projectService.save(p3, user2.getId());
 
             // ========================
             // LINK PROJECTS → USERS

@@ -13,4 +13,6 @@ public interface ProjectRepository extends MongoRepository<Project, String> {
     List<Project> findByUserId(String userId);
 
     Optional<Project> findByApiKey(String apiKey);
+
+    Boolean existsByApiKey(String apiKey);
 }

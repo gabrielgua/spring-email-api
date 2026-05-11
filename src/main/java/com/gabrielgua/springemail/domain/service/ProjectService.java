@@ -1,5 +1,6 @@
 package com.gabrielgua.springemail.domain.service;
 
+import com.gabrielgua.springemail.api.utils.ProjectApiKeyGenerator;
 import com.gabrielgua.springemail.api.utils.ProjectIdGenerator;
 import com.gabrielgua.springemail.domain.entity.Project;
 import com.gabrielgua.springemail.domain.exception.ProjectNotFoundException;
@@ -7,6 +8,7 @@ import com.gabrielgua.springemail.domain.repository.ProjectRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -31,8 +33,25 @@ public class ProjectService {
         return projectRepository.findByUserId(userId);
     }
 
-    public void save(Project project) {
-        project.setId(ProjectIdGenerator.generate(project.getName()));
-        projectRepository.save(project);
+    public Project save(Project project, String userId) {
+        if (project.isNew()) {
+            project.setId(ProjectIdGenerator.generate(project.getName()));
+            project.setApiKey(generateApiKey());
+            project.setCreatedAt(Instant.now());
+            project.setActive(true);
+            project.setUserId(userId);
+        }
+
+        return projectRepository.save(project);
+    }
+
+    private String generateApiKey() {
+
+        var apiKey = ProjectApiKeyGenerator.generate();
+        while(projectRepository.existsByApiKey(apiKey)) {
+            apiKey = ProjectApiKeyGenerator.generate();
+        }
+
+        return apiKey;
     }
 }

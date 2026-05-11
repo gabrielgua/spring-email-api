@@ -26,4 +26,8 @@ public class Project {
 
     @Indexed(name = "user_id_index")
     private String userId;
+
+    public Boolean isNew() {
+        return id == null;
+    }
 }

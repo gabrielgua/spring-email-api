@@ -1,5 +1,6 @@
 package com.gabrielgua.springemail.api.model.mapper;
 
+import com.gabrielgua.springemail.api.model.dtos.ProjectRequest;
 import com.gabrielgua.springemail.api.model.dtos.ProjectResponse;
 import com.gabrielgua.springemail.domain.entity.Project;
 import com.gabrielgua.springemail.domain.service.ProjectService;
@@ -37,5 +38,13 @@ public class ProjectMapper {
         return projects.stream()
                 .map(this::toResponse)
                 .toList();
+    }
+
+    public Project toEntity(ProjectRequest projectRequest) {
+        var project = new Project();
+        project.setName(projectRequest.getName());
+        project.setDestinationEmail(projectRequest.getDestinationEmail());
+        project.setAllowedOrigins(projectRequest.getAllowedOrigins());
+        return project;
     }
 }
