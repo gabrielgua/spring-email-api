@@ -11,6 +11,7 @@ import com.gabrielgua.springemail.domain.service.UserService;
 import com.mongodb.lang.NonNullApi;
 import com.mongodb.lang.Nullable;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,8 +43,16 @@ public class ProjectController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public ProjectResponse saveNew(@RequestBody ProjectRequest request) {
         var project = projectMapper.toEntity(request);
         return projectMapper.toResponse(projectService.save(project, authUtils.getAuthenticatedUserId()));
+    }
+
+    @PostMapping("/{projectId}/regenerate-api-key")
+    @CheckSecurity.Projects.canManage
+    public String regenerateApiKey(@PathVariable String projectId) {
+        var project = projectService.findById(projectId);
+        return projectService.regenerateApiKey(project);
     }
 }

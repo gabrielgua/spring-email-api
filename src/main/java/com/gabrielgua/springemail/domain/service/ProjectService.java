@@ -45,6 +45,12 @@ public class ProjectService {
         return projectRepository.save(project);
     }
 
+    public String regenerateApiKey(Project project) {
+        var apiKey = generateApiKey();
+        project.setApiKey(apiKey);
+        return projectRepository.save(project).getApiKey();
+    }
+
     private String generateApiKey() {
 
         var apiKey = ProjectApiKeyGenerator.generate();
