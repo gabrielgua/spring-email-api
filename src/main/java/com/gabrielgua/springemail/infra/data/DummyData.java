@@ -16,7 +16,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 @Configuration
-@Profile("dev")
+@Profile("development")
 public class DummyData {
 
     @Bean
