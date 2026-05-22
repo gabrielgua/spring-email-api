@@ -38,10 +38,10 @@ public class EmailService {
 
         try {
             var helper = new MimeMessageHelper(message, "UTF-8");
-            helper.setFrom("no-reply@emailautomatico.com");
             helper.setTo(project.getDestinationEmail());
             helper.setReplyTo(project.getDestinationEmail());
             helper.setSubject("Novo Contato - " + project.getName());
+            helper.setFrom("sendora-email", "Sendora Email Service");
             helper.setText(html, true);
 
             javaMailSender.send(message);
