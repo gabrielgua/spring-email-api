@@ -38,7 +38,7 @@ public class DummyData {
             // 👑 ADMIN
             // ========================
             User admin = new User();
-            admin.setName("Gabriel Admin");
+            admin.setName("Admin");
             admin.setEmail("admin@springemail.com");
             admin.setRole(UserRole.ROLE_ADMIN);
             admin.setPassword("$2y$10$SvJ.hPeeq6LFoIslBmt71ekT9lnvVhb62aeIRH96/S3KlE8PY3gcW");
