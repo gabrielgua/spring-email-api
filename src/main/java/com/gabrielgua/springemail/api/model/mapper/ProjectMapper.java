@@ -25,12 +25,15 @@ public class ProjectMapper {
                 .build();
     }
 
-    public ProjectResponse toResponseEdit(Project project) {
+    public ProjectResponse toFullResponse(Project project) {
         return ProjectResponse.builder()
                 .id(project.getId())
+                .name(project.getName())
+                .active(project.getActive())
                 .apiKey(project.getApiKey())
                 .destinationEmail(project.getDestinationEmail())
                 .allowedOrigins(project.getAllowedOrigins())
+                .createdAt(project.getCreatedAt())
                 .build();
     }
 

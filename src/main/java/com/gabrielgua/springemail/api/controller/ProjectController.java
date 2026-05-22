@@ -39,7 +39,7 @@ public class ProjectController {
     @GetMapping("/{projectId}")
     @CheckSecurity.Projects.canManage
     public ProjectResponse findById(@PathVariable String projectId) {
-        return projectMapper.toResponse(projectService.findById(projectId));
+        return projectMapper.toFullResponse(projectService.findById(projectId));
     }
 
     @PostMapping

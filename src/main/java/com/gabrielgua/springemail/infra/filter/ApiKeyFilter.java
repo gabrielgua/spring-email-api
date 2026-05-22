@@ -70,9 +70,7 @@ public class ApiKeyFilter extends OncePerRequestFilter {
             }
         }
 
-
-
-        //seta o project na request pro controller ter o acesso
+        //coloca o project na request pro controller ter o acesso
         request.setAttribute("project", project.get());
 
         filterChain.doFilter(request, response);

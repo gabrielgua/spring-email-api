@@ -14,10 +14,17 @@ public @interface CheckSecurity {
         @Target(ElementType.METHOD)
         @PreAuthorize("hasRole('ADMIN')")
         public @interface isAdmin { }
-
     }
 
+
     public @interface Users {
+
+
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @PreAuthorize("@authorizationService.is")
+        public @interface canRead { }
+
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         @PreAuthorize("@authorizationService.canManageUser(#userId)")

@@ -3,6 +3,7 @@ package com.gabrielgua.springemail.api.controller;
 import com.gabrielgua.springemail.api.model.dtos.UserRequest;
 import com.gabrielgua.springemail.api.model.dtos.UserResponse;
 import com.gabrielgua.springemail.api.model.mapper.UserMapper;
+import com.gabrielgua.springemail.api.security.AuthUtils;
 import com.gabrielgua.springemail.api.security.CheckSecurity;
 import com.gabrielgua.springemail.domain.entity.User;
 import com.gabrielgua.springemail.domain.service.UserService;
@@ -20,6 +21,7 @@ public class UserController {
 
     private final UserService userService;
     private final UserMapper userMapper;
+    private final AuthUtils authUtils;
 
     @GetMapping
     @CheckSecurity.General.isAdmin
@@ -31,5 +33,10 @@ public class UserController {
     @CheckSecurity.Users.canManage
     public UserResponse getUserById(@PathVariable String userId) {
         return userMapper.toResponse(userService.findById(userId));
+    }
+
+    @GetMapping("/me")
+    public UserResponse getAuthenticatedUser() {
+        return userMapper.toResponse(userService.findById(authUtils.getAuthenticatedUserId()));
     }
 }

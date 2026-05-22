@@ -91,7 +91,7 @@ public class DummyData {
             p2.setAllowedOrigins(List.of(
                     "https://checkout.wiivalife.com"
             ));
-            projectService.save(p2, user2.getId());
+            projectService.save(p2, user1.getId());
 
             // ========================
             // 📦 PROJECTS - USER 2
