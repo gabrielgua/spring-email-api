@@ -3,14 +3,10 @@ package com.gabrielgua.springemail.domain.service;
 import com.gabrielgua.springemail.api.model.EmailRequest;
 import com.gabrielgua.springemail.domain.entity.Project;
 import com.gabrielgua.springemail.domain.exception.BusinessException;
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import com.resend.Resend;
+import com.resend.services.emails.model.CreateEmailOptions;
 import lombok.RequiredArgsConstructor;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
@@ -21,8 +17,10 @@ import java.time.Year;
 @RequiredArgsConstructor
 public class EmailService {
 
-    private final JavaMailSender javaMailSender;
     private final SpringTemplateEngine templateEngine;
+
+    @Value("${RESEND_API_KEY}")
+    private String resendApiKey;
 
     public void sendEmail(Project project, EmailRequest request) {
 
@@ -36,17 +34,20 @@ public class EmailService {
 
         String html = templateEngine.process("email/contact", context);
 
-        MimeMessage message = javaMailSender.createMimeMessage();
-
         try {
-            var helper = new MimeMessageHelper(message, "UTF-8");
-            helper.setTo(project.getDestinationEmail());
-            helper.setReplyTo(project.getDestinationEmail());
-            helper.setSubject(request.getSubject() + " - " + project.getName());
-            helper.setFrom("sendora.prod@gmail.com", "Sendora Email Service");
-            helper.setText(html, true);
 
-            javaMailSender.send(message);
+            Resend resend = new Resend(resendApiKey);
+
+            CreateEmailOptions params = CreateEmailOptions.builder()
+                    .from("Sendora <onboarding@resend.dev>")
+                    .to(project.getDestinationEmail())
+                    .replyTo(request.getEmail())
+                    .subject(request.getSubject() + " - " + project.getName())
+                    .html(html)
+                    .build();
+
+            resend.emails().send(params);
+
         } catch (Exception e) {
             throw new BusinessException("Failed to send email: " + e.getMessage());
         }
