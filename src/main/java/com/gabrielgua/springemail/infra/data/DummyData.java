@@ -68,6 +68,17 @@ public class DummyData {
             userRepository.save(user2);
 
             // ========================
+            // 👤 USER 3
+            // ========================
+            User user3 = new User();
+            user3.setName("Gabriel NewPrix");
+            user3.setEmail("newprixaz@gmail.com");
+            user3.setRole(UserRole.ROLE_USER);
+            user3.setPassword(admin.getPassword());
+            user3.setCreatedAt(now);
+            userRepository.save(user3);
+
+            // ========================
             // 📦 PROJECTS - USER 1
             // ========================
             Project p1 = new Project();
@@ -110,14 +121,27 @@ public class DummyData {
             ));
             projectService.save(p3, user2.getId());
 
+            Project p4 = new Project();
+            p4.setName("NewPrix Landing");
+            p4.setApiKey("PROJ_981273823189739821798132");
+            p4.setActive(true);
+            p4.setDestinationEmail("newprixaz@gmail.com");
+            p4.setUserId(user2.getId());
+            p4.setCreatedAt(now);
+            p4.setAllowedOrigins(List.of(
+                    "https://newprix.com.br", "http://localhost:5173"
+            ));
+            projectService.save(p4, user3.getId());
+
             // ========================
             // LINK PROJECTS → USERS
             // ========================
             user1.setProjectIds(List.of(p1.getId(), p2.getId()));
             user2.setProjectIds(List.of(p3.getId()));
+            user3.setProjectIds(List.of(p4.getId()));
             admin.setProjectIds(List.of()); // admin não precisa
 
-            userRepository.saveAll(List.of(user1, user2, admin));
+            userRepository.saveAll(List.of(user1, user2, user3, admin));
         };
     }
 }
