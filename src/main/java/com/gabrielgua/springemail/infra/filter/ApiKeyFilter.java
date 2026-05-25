@@ -39,7 +39,7 @@ public class ApiKeyFilter extends OncePerRequestFilter {
             return;
         }
 
-        String apiKey = request.getHeader("x-api-key");
+        String apiKey = request.getHeader("X-Api-Key");
         String origin = request.getHeader("Origin");
 
         //valida se foi passado apikey
