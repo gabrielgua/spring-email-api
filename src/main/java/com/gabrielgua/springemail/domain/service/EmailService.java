@@ -43,7 +43,7 @@ public class EmailService {
             helper.setTo(project.getDestinationEmail());
             helper.setReplyTo(project.getDestinationEmail());
             helper.setSubject(request.getSubject() + " - " + project.getName());
-            helper.setFrom("no-reply@sendora.com", "Sendora Email Service");
+            helper.setFrom("sendora.prod@gmail.com", "Sendora Email Service");
             helper.setText(html, true);
 
             javaMailSender.send(message);
