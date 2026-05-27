@@ -14,8 +14,6 @@ public class EmailMapper {
         return EmailResponse.builder()
                 .name(request.getName())
                 .fromEmail(request.getEmail())
-                .destinationEmail(project.getDestinationEmail())
-                .message(request.getMessage())
                 .timestamp(Instant.now())
                 .build();
     }
