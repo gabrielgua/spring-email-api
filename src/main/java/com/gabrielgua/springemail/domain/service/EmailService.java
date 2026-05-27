@@ -22,6 +22,9 @@ public class EmailService {
     @Value("${RESEND_API_KEY}")
     private String resendApiKey;
 
+    @Value("${RESEND_EMAIL_NAME}")
+    private String resendEmailName;
+
     public void sendEmail(Project project, EmailRequest request) {
 
         Context context = new Context();
@@ -39,7 +42,7 @@ public class EmailService {
             Resend resend = new Resend(resendApiKey);
 
             CreateEmailOptions params = CreateEmailOptions.builder()
-                    .from("Sendora <onboarding@resend.dev>")
+                    .from(resendEmailName)
                     .to(project.getDestinationEmail())
                     .replyTo(request.getEmail())
                     .subject(request.getSubject() + " - " + project.getName())
