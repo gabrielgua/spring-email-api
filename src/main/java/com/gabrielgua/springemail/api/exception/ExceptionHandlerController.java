@@ -1,10 +1,7 @@
 package com.gabrielgua.springemail.api.exception;
 
-import com.gabrielgua.springemail.domain.exception.BusinessException;
-import com.gabrielgua.springemail.domain.exception.EmailTakenException;
-import com.gabrielgua.springemail.domain.exception.ResourceNotFoundException;
+import com.gabrielgua.springemail.domain.exception.*;
 import lombok.RequiredArgsConstructor;
-import org.apache.el.util.ExceptionUtils;
 import org.jspecify.annotations.Nullable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -106,6 +102,48 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     public ResponseEntity<?> handleEmailTakenException(EmailTakenException ex, WebRequest request) {
         var  status = HttpStatus.UNPROCESSABLE_CONTENT;
         var problem = exceptionService.createProblem("EMAIL_TAKEN", ex.getMessage(), status.value());
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+    }
+
+    @ExceptionHandler(AllowedOriginNotFoundException.class)
+    public ResponseEntity<?> handleAllowedOriginNotFoundException(AllowedOriginNotFoundException ex, WebRequest request) {
+        var status = HttpStatus.UNPROCESSABLE_CONTENT;
+        var problem = exceptionService.createProblem("ALLOWED_ORIGIN_NOT_FOUND", ex.getMessage(), status.value());
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+    }
+
+    @ExceptionHandler(DuplicatedAllowedOriginException.class)
+    public ResponseEntity<?> handleDuplicatedAllowedOriginException(DuplicatedAllowedOriginException ex, WebRequest request) {
+        var status = HttpStatus.UNPROCESSABLE_CONTENT;
+        var problem = exceptionService.createProblem("DUPLICATED_ALLOWED_ORIGIN", ex.getMessage(), status.value());
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+    }
+
+    @ExceptionHandler(DuplicatedProjectFieldException.class)
+    public ResponseEntity<?> handleDuplicatedProjectFieldException(DuplicatedProjectFieldException ex, WebRequest request) {
+        var status = HttpStatus.UNPROCESSABLE_CONTENT;
+        var problem = exceptionService.createProblem("DUPLICATED_PROJECT_FIELD", ex.getMessage(), status.value());
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+    }
+
+    @ExceptionHandler(InvalidProjectFieldException.class)
+    public  ResponseEntity<?> handleInvalidProjectFieldException(InvalidProjectFieldException ex, WebRequest request) {
+        var status = HttpStatus.UNPROCESSABLE_CONTENT;
+        var problem = exceptionService.createProblem("INVALID_PROJECT_FIELD", ex.getMessage(), status.value());
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+    }
+
+    @ExceptionHandler(ProjectFieldNotFoundException.class)
+    public  ResponseEntity<?> handleProjectFieldNotFoundException(ProjectFieldNotFoundException ex, WebRequest request) {
+        var status = HttpStatus.UNPROCESSABLE_CONTENT;
+        var problem = exceptionService.createProblem("PROJECT_FIELD_NOT_FOUND", ex.getMessage(), status.value());
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+    }
+
+    @ExceptionHandler(ProjectFieldsLimitExceededException.class)
+    public ResponseEntity<?> handleProjectFieldsLimitExceededException(ProjectFieldsLimitExceededException ex, WebRequest request) {
+        var status = HttpStatus.UNPROCESSABLE_CONTENT;
+        var problem = exceptionService.createProblem("PROJECT_FIELDS_LIMIT_EXCEEDED", ex.getMessage(), status.value());
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 

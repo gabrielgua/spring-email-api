@@ -17,7 +17,4 @@ public class ProjectRequest {
     @Email
     @NotBlank
     private String destinationEmail;
-
-    @NotEmpty
-    private List<String> allowedOrigins;
 }

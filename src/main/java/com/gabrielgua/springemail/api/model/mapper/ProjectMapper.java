@@ -14,6 +14,8 @@ import java.util.List;
 public class ProjectMapper {
 
     private final ProjectService projectService;
+    private final ProjectAllowedOriginMapper projectAllowedOriginMapper;
+    private final ProjectFieldMapper projectFieldMapper;
 
     public ProjectResponse toResponse(Project project) {
         return ProjectResponse.builder()
@@ -32,7 +34,8 @@ public class ProjectMapper {
                 .active(project.getActive())
                 .apiKey(project.getApiKey())
                 .destinationEmail(project.getDestinationEmail())
-                .allowedOrigins(project.getAllowedOrigins())
+                .allowedOrigins(projectAllowedOriginMapper.toCollectionResponse(project.getAllowedOrigins()))
+                .fields(projectFieldMapper.toCollectionResponse(project.getFields()))
                 .createdAt(project.getCreatedAt())
                 .build();
     }
@@ -47,7 +50,6 @@ public class ProjectMapper {
         var project = new Project();
         project.setName(projectRequest.getName());
         project.setDestinationEmail(projectRequest.getDestinationEmail());
-        project.setAllowedOrigins(projectRequest.getAllowedOrigins());
         return project;
     }
 }

@@ -1,12 +1,12 @@
 package com.gabrielgua.springemail.domain.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -22,7 +22,8 @@ public class Project {
     private String destinationEmail;
     private Boolean active;
     private Instant createdAt;
-    private List<String> allowedOrigins;
+    private List<ProjectAllowedOrigin> allowedOrigins = new ArrayList<>();
+    private List<ProjectField> fields = new ArrayList<>();
 
     @Indexed(name = "user_id_index")
     private String userId;

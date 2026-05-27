@@ -20,7 +20,8 @@ public class ProjectResponse {
     private String destinationEmail;
     private Boolean active;
     private Instant createdAt;
-    private List<String> allowedOrigins;
+    private List<ProjectAllowedOriginResponse> allowedOrigins;
+    private List<ProjectFieldResponse> fields;
     private String userId;
 
 }

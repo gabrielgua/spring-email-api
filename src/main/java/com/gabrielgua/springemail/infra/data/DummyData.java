@@ -1,6 +1,7 @@
 package com.gabrielgua.springemail.infra.data;
 
 import com.gabrielgua.springemail.domain.entity.Project;
+import com.gabrielgua.springemail.domain.entity.ProjectAllowedOrigin;
 import com.gabrielgua.springemail.domain.entity.User;
 import com.gabrielgua.springemail.domain.entity.UserRole;
 import com.gabrielgua.springemail.domain.repository.ProjectRepository;
@@ -12,8 +13,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import java.time.Instant;
-import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Configuration
 @Profile("development")
@@ -83,26 +84,35 @@ public class DummyData {
             // ========================
             Project p1 = new Project();
             p1.setName("Wiiva Life Landing");
-            p1.setApiKey("wiiva_api_key_123456");
+            p1.setApiKey("PROJ_WIIVA123456");
             p1.setActive(true);
             p1.setDestinationEmail("contato@wiivalife.com");
             p1.setUserId(user1.getId());
             p1.setCreatedAt(now);
             p1.setAllowedOrigins(List.of(
-                    "https://wiivalife.com",
-                    "http://localhost:5173"
+                    new ProjectAllowedOrigin(
+                            UUID.randomUUID().toString(),
+                            "https://wiivalife.com"
+                    ),
+                    new ProjectAllowedOrigin(
+                            UUID.randomUUID().toString(),
+                            "http://localhost:5173"
+                    )
             ));
             projectService.save(p1, user1.getId());
 
             Project p2 = new Project();
             p2.setName("Wiiva Checkout");
-            p2.setApiKey("wiiva_checkout_987654");
+            p2.setApiKey("PROJ_CHECK987654");
             p2.setActive(true);
             p2.setDestinationEmail("vendas@wiivalife.com");
             p2.setUserId(user1.getId());
             p2.setCreatedAt(now);
             p2.setAllowedOrigins(List.of(
-                    "https://checkout.wiivalife.com"
+                    new ProjectAllowedOrigin(
+                            UUID.randomUUID().toString(),
+                            "https://checkout.wiivalife.com"
+                    )
             ));
             projectService.save(p2, user1.getId());
 
@@ -111,25 +121,38 @@ public class DummyData {
             // ========================
             Project p3 = new Project();
             p3.setName("Fit Nutrition Website");
-            p3.setApiKey("fit_api_key_456789");
+            p3.setApiKey("PROJ_FIT456789");
             p3.setActive(true);
             p3.setDestinationEmail("suporte@fitnutrition.com");
             p3.setUserId(user2.getId());
             p3.setCreatedAt(now);
             p3.setAllowedOrigins(List.of(
-                    "https://fitnutrition.com"
+                    new ProjectAllowedOrigin(
+                            UUID.randomUUID().toString(),
+                            "https://fitnutrition.com"
+                    )
             ));
             projectService.save(p3, user2.getId());
 
+            // ========================
+            // 📦 PROJECTS - USER 3
+            // ========================
             Project p4 = new Project();
             p4.setName("NewPrix Landing");
-            p4.setApiKey("PROJ_981273823189739821798132");
+            p4.setApiKey("PROJ_981273823189");
             p4.setActive(true);
             p4.setDestinationEmail("newprixaz@gmail.com");
-            p4.setUserId(user2.getId());
+            p4.setUserId(user3.getId());
             p4.setCreatedAt(now);
             p4.setAllowedOrigins(List.of(
-                    "https://newprix.com.br", "http://localhost:5173"
+                    new ProjectAllowedOrigin(
+                            UUID.randomUUID().toString(),
+                            "https://newprix.com.br"
+                    ),
+                    new ProjectAllowedOrigin(
+                            UUID.randomUUID().toString(),
+                            "http://localhost:5173"
+                    )
             ));
             projectService.save(p4, user3.getId());
 
@@ -139,7 +162,7 @@ public class DummyData {
             user1.setProjectIds(List.of(p1.getId(), p2.getId()));
             user2.setProjectIds(List.of(p3.getId()));
             user3.setProjectIds(List.of(p4.getId()));
-            admin.setProjectIds(List.of()); // admin não precisa
+            admin.setProjectIds(List.of());
 
             userRepository.saveAll(List.of(user1, user2, user3, admin));
         };
