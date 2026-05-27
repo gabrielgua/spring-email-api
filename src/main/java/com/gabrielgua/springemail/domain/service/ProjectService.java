@@ -87,8 +87,25 @@ public class ProjectService {
         projectRepository.save(project);
     }
 
-    public void addField(Project project, ProjectField field) {
-        project.getFields().add(field);
+    public void addProjectFields(Project project, List<ProjectField> fields) {
+        for (ProjectField field : fields) {
+
+            field.setKey(field.getKey().trim().toLowerCase());
+
+            boolean duplicated = project.getFields().stream()
+                    .anyMatch(f -> f.getKey().equals(field.getKey()));
+
+            if (duplicated) {
+                throw new DuplicatedProjectFieldException();
+            }
+
+            if (project.getFields().size() >= PROJECT_FIELDS_MAX_VALUE) {
+                throw new ProjectFieldsLimitExceededException();
+            }
+
+            project.getFields().add(field);
+        }
+
         save(project, project.getUserId());
     }
 

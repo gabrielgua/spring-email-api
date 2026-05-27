@@ -1,9 +1,11 @@
 package com.gabrielgua.springemail.api.model.mapper;
 
+import com.gabrielgua.springemail.api.model.dtos.ProjectFieldRequest;
 import com.gabrielgua.springemail.api.model.dtos.ProjectFieldResponse;
 import com.gabrielgua.springemail.domain.entity.ProjectField;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.List;
 
 @Component
@@ -20,5 +22,13 @@ public class ProjectFieldMapper {
 
     public List<ProjectFieldResponse> toCollectionResponse(List<ProjectField> projectFields) {
         return projectFields.stream().map(this::toResponse).toList();
+    }
+
+    public ProjectField toEntity(ProjectFieldRequest request) {
+        return new ProjectField(request.getKey(), request.getLabel(), request.getType(), request.isRequired());
+    }
+
+    public List<ProjectField> toCollectionEntity(Collection<ProjectFieldRequest> requests) {
+        return requests.stream().map(this::toEntity).toList();
     }
 }
