@@ -3,6 +3,7 @@ package com.gabrielgua.springemail.domain.service;
 import com.gabrielgua.springemail.api.model.EmailRequest;
 import com.gabrielgua.springemail.api.model.dtos.EmailFieldTemplate;
 import com.gabrielgua.springemail.domain.entity.Project;
+import com.gabrielgua.springemail.domain.entity.ProjectField;
 import com.gabrielgua.springemail.domain.entity.ProjectFieldType;
 import com.gabrielgua.springemail.domain.exception.BusinessException;
 import com.resend.Resend;
@@ -40,9 +41,9 @@ public class EmailService {
 
         Context context = new Context();
 
-        String replyTo = templateFields.stream()
-                .filter(field -> field.type() == ProjectFieldType.EMAIL)
-                .map(EmailFieldTemplate::value)
+        String replyTo = project.getFields().stream()
+                .filter(ProjectField::isReplyTo)
+                .map(field -> request.getFields().get(field.getKey()))
                 .findFirst()
                 .orElse(null);
 

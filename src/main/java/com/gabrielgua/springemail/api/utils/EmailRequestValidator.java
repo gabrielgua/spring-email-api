@@ -4,6 +4,7 @@ import com.gabrielgua.springemail.api.model.EmailRequest;
 import com.gabrielgua.springemail.domain.entity.Project;
 import com.gabrielgua.springemail.domain.entity.ProjectField;
 import com.gabrielgua.springemail.domain.exception.BusinessException;
+import com.gabrielgua.springemail.domain.exception.InvalidProjectFieldException;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
@@ -29,9 +30,7 @@ public class EmailRequestValidator {
             String value = request.getFields().get(field.getKey());
 
             if (value == null || value.isBlank()) {
-                throw new BusinessException(
-                        "Field '%s' is required".formatted(field.getKey())
-                );
+                throw new InvalidProjectFieldException("A required field is missing for this project");
             }
         }
     }
@@ -45,9 +44,7 @@ public class EmailRequestValidator {
         for (String key : request.getFields().keySet()) {
 
             if (!allowedKeys.contains(key)) {
-                throw new BusinessException(
-                        "Field '%s' does not exist".formatted(key)
-                );
+                throw new InvalidProjectFieldException("One or more fields are invalid, incorrect or don't exists for this project.");
             }
         }
     }
@@ -70,13 +67,10 @@ public class EmailRequestValidator {
     }
 
     private void validateEmail(String key, String value) {
-
-        boolean valid = value.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
+        boolean valid = value.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
 
         if (!valid) {
-            throw new BusinessException(
-                    "Field '%s' must be a valid email".formatted(key)
-            );
+            throw new InvalidProjectFieldException("Field '%s' must be a valid email".formatted(key));
         }
     }
 
@@ -84,9 +78,7 @@ public class EmailRequestValidator {
         try {
             Double.parseDouble(value);
         } catch (Exception ex) {
-            throw new BusinessException(
-                    "Field '%s' must be a number".formatted(key)
-            );
+            throw new InvalidProjectFieldException("Field '%s' must be a number".formatted(key));
         }
     }
 }
