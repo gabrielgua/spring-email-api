@@ -17,6 +17,7 @@ public class ProjectFieldMapper {
                 .label(projectField.getLabel())
                 .type(projectField.getType())
                 .required(projectField.isRequired())
+                .replyTo(projectField.isReplyTo())
                 .build();
     }
 
@@ -25,7 +26,7 @@ public class ProjectFieldMapper {
     }
 
     public ProjectField toEntity(ProjectFieldRequest request) {
-        return new ProjectField(request.getKey(), request.getLabel(), request.getType(), request.isRequired());
+        return new ProjectField(request.getKey(), request.getLabel(), request.getType(), request.isRequired(), request.isReplyTo());
     }
 
     public List<ProjectField> toCollectionEntity(Collection<ProjectFieldRequest> requests) {

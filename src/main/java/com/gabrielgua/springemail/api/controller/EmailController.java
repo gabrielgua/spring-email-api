@@ -1,8 +1,7 @@
 package com.gabrielgua.springemail.api.controller;
 
 import com.gabrielgua.springemail.api.model.EmailRequest;
-import com.gabrielgua.springemail.api.model.dtos.EmailResponse;
-import com.gabrielgua.springemail.api.model.mapper.EmailMapper;
+import com.gabrielgua.springemail.api.utils.EmailRequestValidator;
 import com.gabrielgua.springemail.domain.entity.Project;
 import com.gabrielgua.springemail.domain.service.EmailService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,12 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class EmailController {
 
     private final EmailService emailService;
-    private final EmailMapper emailMapper;
+    private final EmailRequestValidator  emailRequestValidator;
 
     @PostMapping
-    public ResponseEntity<EmailResponse> sendEmail(@RequestBody EmailRequest emailRequest, HttpServletRequest request) {
+    public ResponseEntity<?> sendEmail(@RequestBody EmailRequest emailRequest, HttpServletRequest request) {
         var project = (Project) request.getAttribute("project");
+        emailRequestValidator.validate(project, emailRequest);
         emailService.sendEmail(project, emailRequest);
-        return ResponseEntity.ok(emailMapper.toResponse(emailRequest, project));
+        return ResponseEntity.ok().build();
     }
 }

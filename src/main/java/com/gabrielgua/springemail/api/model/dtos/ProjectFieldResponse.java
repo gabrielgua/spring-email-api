@@ -16,4 +16,5 @@ public class ProjectFieldResponse {
     private String label;
     private ProjectFieldType type;
     private boolean required;
+    private boolean replyTo;
 }

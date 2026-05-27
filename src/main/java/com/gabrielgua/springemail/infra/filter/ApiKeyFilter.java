@@ -64,7 +64,12 @@ public class ApiKeyFilter extends OncePerRequestFilter {
 
         //valida se a origin da request é allowed pelo projeto
         if (!project.get().getAllowedOrigins().isEmpty()) {
-            if (!project.get().getAllowedOrigins().contains(origin)) {
+
+            boolean allowed = origin != null &&
+                    project.get().getAllowedOrigins().stream()
+                            .anyMatch(o -> o.getOrigin().equalsIgnoreCase(origin));
+
+            if (!allowed) {
                 error(request, response, "ORIGIN_NOT_ALLOWED",  HttpStatus.FORBIDDEN, "Origin not allowed", apiKey);
                 return;
             }

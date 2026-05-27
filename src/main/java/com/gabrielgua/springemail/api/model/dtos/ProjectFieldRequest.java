@@ -19,6 +19,7 @@ public class ProjectFieldRequest {
     @NotNull
     private ProjectFieldType type;
 
-    @NotNull
     private boolean required;
+
+    private boolean replyTo;
 }

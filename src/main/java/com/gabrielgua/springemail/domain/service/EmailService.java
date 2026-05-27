@@ -1,7 +1,9 @@
 package com.gabrielgua.springemail.domain.service;
 
 import com.gabrielgua.springemail.api.model.EmailRequest;
+import com.gabrielgua.springemail.api.model.dtos.EmailFieldTemplate;
 import com.gabrielgua.springemail.domain.entity.Project;
+import com.gabrielgua.springemail.domain.entity.ProjectFieldType;
 import com.gabrielgua.springemail.domain.exception.BusinessException;
 import com.resend.Resend;
 import com.resend.services.emails.model.CreateEmailOptions;
@@ -27,12 +29,26 @@ public class EmailService {
 
     public void sendEmail(Project project, EmailRequest request) {
 
+        var templateFields = project.getFields().stream()
+                .map(field -> new EmailFieldTemplate(
+                        field.getKey(),
+                        field.getLabel(),
+                        request.getFields().get(field.getKey()),
+                        field.getType()
+                ))
+                .toList();
+
         Context context = new Context();
-        context.setVariable("name", request.getName());
-        context.setVariable("email", request.getEmail());
-        context.setVariable("message", request.getMessage());
-        context.setVariable("subject", request.getSubject());
+
+        String replyTo = templateFields.stream()
+                .filter(field -> field.type() == ProjectFieldType.EMAIL)
+                .map(EmailFieldTemplate::value)
+                .findFirst()
+                .orElse(null);
+
+        context.setVariable("fields", templateFields);
         context.setVariable("projectName", project.getName());
+        context.setVariable("replyTo", replyTo);
         context.setVariable("year", Year.now().getValue());
 
         String html = templateEngine.process("email/contact", context);
@@ -44,8 +60,8 @@ public class EmailService {
             CreateEmailOptions params = CreateEmailOptions.builder()
                     .from(resendEmailName)
                     .to(project.getDestinationEmail())
-                    .replyTo(request.getEmail())
-                    .subject(request.getSubject() + " - " + project.getName())
+                    .replyTo(replyTo)
+                    .subject("Nova Mensagem - " + project.getName())
                     .html(html)
                     .build();
 

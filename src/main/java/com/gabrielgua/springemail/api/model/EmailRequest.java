@@ -2,10 +2,9 @@ package com.gabrielgua.springemail.api.model;
 
 import lombok.Data;
 
+import java.util.Map;
+
 @Data
 public class EmailRequest {
-    private String name;
-    private String email;
-    private String subject;
-    private String message;
+    private Map<String, String> fields;
 }
