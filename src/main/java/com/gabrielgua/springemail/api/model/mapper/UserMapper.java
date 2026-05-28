@@ -19,7 +19,6 @@ public class UserMapper {
                 .role(user.getRole())
                 .email(user.getEmail())
                 .createdAt(user.getCreatedAt())
-                .projectIds(user.getProjectIds())
                 .build();
     }
 

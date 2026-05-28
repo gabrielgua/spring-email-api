@@ -155,15 +155,6 @@ public class DummyData {
                     )
             ));
             projectService.save(p4, user3.getId());
-
-            // ========================
-            // LINK PROJECTS → USERS
-            // ========================
-            user1.setProjectIds(List.of(p1.getId(), p2.getId()));
-            user2.setProjectIds(List.of(p3.getId()));
-            user3.setProjectIds(List.of(p4.getId()));
-            admin.setProjectIds(List.of());
-
             userRepository.saveAll(List.of(user1, user2, user3, admin));
         };
     }

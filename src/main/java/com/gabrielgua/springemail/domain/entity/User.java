@@ -25,8 +25,6 @@ public class User {
     private String password;
     private Instant createdAt;
 
-    private List<String> projectIds = new ArrayList<>();
-
     public Boolean isNew() {
         return this.id == null;
     }

@@ -136,8 +136,6 @@ public class ProjectService {
 
         var user = userService.findById(userId);
         project.setUserId(user.getId());
-        user.getProjectIds().add(project.getId());
-        userService.save(user);
 
         normalizeProjectFieldKeys(project.getFields());
     }
