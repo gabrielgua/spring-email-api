@@ -50,6 +50,9 @@ public class ProjectMapper {
         var project = new Project();
         project.setName(projectRequest.getName());
         project.setDestinationEmail(projectRequest.getDestinationEmail());
+        if (projectRequest.getUserId() != null) {
+            project.setUserId(projectRequest.getUserId());
+        }
         return project;
     }
 }

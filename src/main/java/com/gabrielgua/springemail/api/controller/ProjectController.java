@@ -46,7 +46,7 @@ public class ProjectController {
     @ResponseStatus(HttpStatus.CREATED)
     public ProjectResponse saveNew(@RequestBody ProjectRequest request) {
         var project = projectMapper.toEntity(request);
-        return projectMapper.toResponse(projectService.save(project, authUtils.getAuthenticatedUserId()));
+        return projectMapper.toResponse(projectService.save(project, resolveProjectOwner(request)));
     }
 
     @PostMapping("/{projectId}/regenerate-api-key")
@@ -55,4 +55,13 @@ public class ProjectController {
         var project = projectService.findById(projectId);
         return projectService.regenerateApiKey(project);
     }
+
+    private String resolveProjectOwner(ProjectRequest request) {
+        if (authUtils.isAdmin() && request.getUserId() != null) {
+            return request.getUserId();
+        }
+
+        return authUtils.getAuthenticatedUserId();
+    }
+
 }

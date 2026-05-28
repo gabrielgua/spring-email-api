@@ -22,6 +22,7 @@ public class ProjectService {
 
     private static final int PROJECT_FIELDS_MAX_VALUE = 20;
     private final ProjectRepository projectRepository;
+    private final UserService userService;
 
     public Project findById(String id) {
         return projectRepository.findById(id).orElseThrow(ProjectNotFoundException::new);
@@ -132,7 +133,11 @@ public class ProjectService {
         project.setApiKey(generateApiKey());
         project.setCreatedAt(Instant.now());
         project.setActive(true);
-        project.setUserId(userId);
+
+        var user = userService.findById(userId);
+        project.setUserId(user.getId());
+        user.getProjectIds().add(project.getId());
+        userService.save(user);
 
         normalizeProjectFieldKeys(project.getFields());
     }

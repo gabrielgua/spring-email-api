@@ -17,4 +17,6 @@ public class ProjectRequest {
     @Email
     @NotBlank
     private String destinationEmail;
+
+    private String userId;
 }
