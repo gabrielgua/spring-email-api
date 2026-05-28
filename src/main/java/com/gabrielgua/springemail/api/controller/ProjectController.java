@@ -27,13 +27,17 @@ public class ProjectController {
     private final AuthUtils authUtils;
 
     @GetMapping
-    @CheckSecurity.Projects.canList
     public List<ProjectResponse> findByUserId(@Nullable @RequestParam String userId) {
-        if (userId == null) {
-            return projectMapper.toResponseList(projectService.findAll());
+        if (authUtils.isAdmin()) {
+            if (userId == null || userId.isBlank()) {
+                return projectMapper.toResponseList(projectService.findAll());
+            }
+
+            var user = userService.findById(userId);
+            return projectMapper.toResponseList(projectService.findByUserId(user.getId()));
         }
-        var user = userService.findById(userId);
-        return projectMapper.toResponseList(projectService.findByUserId(user.getId()));
+
+        return projectMapper.toResponseList(projectService.findByUserId(authUtils.getAuthenticatedUserId()));
     }
 
     @GetMapping("/{projectId}")
