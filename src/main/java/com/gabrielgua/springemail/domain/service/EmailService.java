@@ -31,6 +31,12 @@ public class EmailService {
     public void sendEmail(Project project, EmailRequest request) {
 
         var templateFields = project.getFields().stream()
+                .sorted((a, b) -> { //sorts textarea fields always to the bottom of the list
+                    boolean aTextarea = a.getType() == ProjectFieldType.TEXTAREA;
+                    boolean bTextarea = b.getType() == ProjectFieldType.TEXTAREA;
+
+                    return Boolean.compare(aTextarea, bTextarea);
+                })
                 .map(field -> new EmailFieldTemplate(
                         field.getKey(),
                         field.getLabel(),
