@@ -147,6 +147,13 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 
+    @ExceptionHandler(InvalidAllowedOriginException.class)
+    public ResponseEntity<?> handleInvalidAllowedOriginException(InvalidAllowedOriginException ex, WebRequest request) {
+        var status = HttpStatus.UNPROCESSABLE_CONTENT;
+        var problem = exceptionService.createProblem("INVALID_ALLOWED_ORIGIN", ex.getMessage(), status.value());
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+    }
+
     private ResponseEntity<Object> handlePropertyBindingException(PropertyBindingException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         var propertyName = ex.getPropertyName();
         var className = ex.getReferringClass().getSimpleName();

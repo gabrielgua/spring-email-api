@@ -10,6 +10,7 @@ import com.gabrielgua.springemail.domain.repository.ProjectRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.net.URI;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,20 +63,54 @@ public class ProjectService {
         }
 
         for (String origin : origins) {
-
+            var normalizedOrigin = normalizeOrigin(origin);
             boolean duplicated = project.getAllowedOrigins().stream()
-                    .anyMatch(o -> o.getOrigin().equals(origin.trim().toLowerCase()));
+                    .anyMatch(o -> o.getOrigin().equals(normalizedOrigin));
 
             if (duplicated) {
                 throw new DuplicatedAllowedOriginException();
             }
 
-            project.getAllowedOrigins().add(new ProjectAllowedOrigin(
-                    UUID.randomUUID().toString(), origin.trim().toLowerCase()
-            ));
+            project.getAllowedOrigins().add(new ProjectAllowedOrigin(UUID.randomUUID().toString(), normalizedOrigin));
         }
 
         projectRepository.save(project);
+    }
+
+    private String normalizeOrigin(String origin) {
+
+        if (origin == null || origin.isBlank()) {
+            throw new InvalidAllowedOriginException("Origin must not be blank");
+        }
+
+        origin = origin.trim().toLowerCase();
+
+        if (origin.endsWith("/")) {
+            origin = origin.substring(0, origin.length() - 1);
+        }
+
+        URI uri;
+
+        try {
+            uri = URI.create(origin);
+        } catch (IllegalArgumentException ex) {
+            throw new InvalidAllowedOriginException("Invalid origin format");
+        }
+
+        if (!uri.getScheme().equals("http")
+                && !uri.getScheme().equals("https")) {
+            throw new InvalidAllowedOriginException(
+                    "Origin must start with http:// or https://"
+            );
+        }
+
+        if (uri.getHost() == null || uri.getHost().isBlank()) {
+            throw new InvalidAllowedOriginException(
+                    "Origin must contain a valid host"
+            );
+        }
+
+        return origin;
     }
 
     public void removeAllowedOrigin(Project project, String originId) {
