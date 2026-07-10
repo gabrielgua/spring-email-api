@@ -11,7 +11,7 @@ public class ProjectAllowedOriginMapper {
 
     public ProjectAllowedOriginResponse toResponse(ProjectAllowedOrigin projectAllowedOrigin) {
         return ProjectAllowedOriginResponse.builder()
-                .id(projectAllowedOrigin.getOrigin())
+                .id(projectAllowedOrigin.getId())
                 .origin(projectAllowedOrigin.getOrigin())
                 .build();
     }
